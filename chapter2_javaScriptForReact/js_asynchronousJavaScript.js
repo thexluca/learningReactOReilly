@@ -70,24 +70,27 @@ window.onload = function() {
     getFakePerson2();
 
     // ** Building Promises ** 
-    const getPeople = (count) => {
-        new Promise((resolves, rejects) => {
+    // The getPeople function returns a new promise. 
+    // The promise makes a request to the API. 
+    // If the promise is successful, the data will load. 
+    // If the promise is unsuccessful, an error will occur.
+    const getPeople = (count) => 
+        new Promise( (resolves, rejects) => {
             const api = `https://api.randomuser.me/?nat=US&results=${count}`;
             const request = new XMLHttpRequest();
             request.open("GET", api);
-            request.onload = () => 
+            request.onload = () => {
                 ( request.status === 200 )
-                ? resolves(JSON.parse(request.response).results)
-                : reject(Error(request.statusText)); 
+                ? resolves( JSON.parse(request.response).results )
+                : reject( Error(request.statusText) );
+            }
             request.onerror = err => rejects(err);
             request.send();
         });
-    }
+
     getPeople(5)
-        .then(members => console.log(members))
-        .catch(error => console.error(`getPeople failed: ${error.message}`));
-
-
+        .then( members => console.log(members) )
+        .catch( error => console.error(`getPeople failed: ${error.message}`) );
 
 
     // - - - end of notes - - - 
